@@ -7,12 +7,13 @@ resource "aws_vpc_endpoint" "vpc_endpoint" {
   tags = local.tags
 }
 
-#resource "aws_vpc_endpoint_subnet_association" "" {
-#
-#}
+resource "aws_vpc_endpoint_subnet_association" "vpc_endpoint_subnet_association" {
+  for_each = toset(var.subnet_ids)
+
+  vpc_endpoint_id = aws_vpc_endpoint.vpc_endpoint.vpc_id
+  subnet_id = each.key
+}
 
 // Use correct service name as requested by module consumer
-// Add tags -> component, deployment identifier
-// Associate with subnets as requested by module consumer
 // ?? Do we need a security group?
 // ?? Do we need a policy?

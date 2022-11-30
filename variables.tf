@@ -19,3 +19,10 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "subnet_ids" {
+  description = "The ID of one or more subnets in which to create a network interface for the endpoint. Applicable for endpoints of type GatewayLoadBalancer and Interface."
+  type        = list(string)
+  default     = []
+  nullable    = false
+}

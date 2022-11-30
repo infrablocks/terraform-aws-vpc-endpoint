@@ -16,5 +16,7 @@ module "api_gateway" {
 
   tags = var.tags
 
+  subnet_ids = var.subnet_ids
+
   vpc_id = data.terraform_remote_state.prerequisites.outputs.vpc_id
 }
