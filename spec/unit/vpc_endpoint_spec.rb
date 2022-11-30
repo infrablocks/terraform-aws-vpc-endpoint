@@ -12,12 +12,21 @@ describe 'VPC endpoint' do
 
   describe 'by default' do
     before(:context) do
-      @plan = plan(role: :root)
+      @plan = plan(role: :root) do |vars|
+        vars.service = 's3'
+        vars.service_type = 'Gateway'
+      end
     end
 
     it 'creates a VPC endpoint' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_vpc_endpoint'))
+    end
+
+    it 'resolves service name' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_vpc_endpoint')
+              .with_attribute_value(:service_name, 'com.amazonaws.eu-west-2.s3'))
     end
 
     it 'outputs the VPC endpoint ID' do

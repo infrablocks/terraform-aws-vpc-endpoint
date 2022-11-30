@@ -14,6 +14,14 @@ variable "vpc_id" {
   description = "The ID of the VPC in which to deploy a VPC endpoint."
 }
 
+variable "service" {
+  description = "Common name of an AWS service (e.g., s3)."
+}
+
+variable "service_type" {
+  description = "Service type, Gateway or Interface."
+}
+
 variable "tags" {
   description = "Map of tags to be applied to VPC endpoint"
   type        = map(string)

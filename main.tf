@@ -1,6 +1,11 @@
+data "aws_vpc_endpoint_service" "s3" {
+  service      = var.service
+  service_type = var.service_type
+}
+
 resource "aws_vpc_endpoint" "vpc_endpoint" {
   vpc_id       = var.vpc_id
-  service_name = "com.amazonaws.${var.region}.s3"
+  service_name = data.aws_vpc_endpoint_service.s3.service_name
 
   subnet_ids = []
 
@@ -14,6 +19,5 @@ resource "aws_vpc_endpoint_subnet_association" "vpc_endpoint_subnet_association"
   subnet_id = each.key
 }
 
-// Use correct service name as requested by module consumer
 // ?? Do we need a security group?
 // ?? Do we need a policy?

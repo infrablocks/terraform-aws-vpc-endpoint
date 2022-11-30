@@ -14,6 +14,9 @@ module "api_gateway" {
   component = var.component
   deployment_identifier = var.deployment_identifier
 
+  service = var.service
+  service_type = var.service_type
+
   tags = var.tags
 
   subnet_ids = var.subnet_ids
