@@ -1,0 +1,8 @@
+---
+region: 'eu-west-1'
+
+component: 'test'
+deployment_identifier: "%{hiera('seed')}"
+
+domain_name: "infrablocks.click"
+public_zone_id: "Z08829023L5IPIQBJOX63"
