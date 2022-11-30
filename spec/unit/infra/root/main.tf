@@ -14,5 +14,7 @@ module "api_gateway" {
   component = var.component
   deployment_identifier = var.deployment_identifier
 
+  tags = var.tags
+
   vpc_id = data.terraform_remote_state.prerequisites.outputs.vpc_id
 }

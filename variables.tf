@@ -13,3 +13,9 @@ variable "deployment_identifier" {
 variable "vpc_id" {
   description = "The ID of the VPC in which to deploy a VPC endpoint."
 }
+
+variable "tags" {
+  description = "Map of tags to be applied to VPC endpoint"
+  type        = map(string)
+  default     = {}
+}
