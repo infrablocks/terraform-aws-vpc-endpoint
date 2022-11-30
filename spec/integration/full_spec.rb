@@ -11,16 +11,13 @@ describe 'full' do
     destroy(role: :full)
   end
 
-  let(:api_gateway_rest_api_name) do
-    output(role: :full, name: 'api_gateway_rest_api_name')
-  end
-  let(:certificate_arn) do
-    output(role: :full, name: 'certificate_arn')
+  let(:vpc_endpoint_id) do
+    output(role: :full, name: 'vpc_endpoint_id')
   end
 
-  describe 'API gateway' do
-    subject { apigateway(api_gateway_rest_api_name) }
+  describe 'VPC endpoint' do
+    subject { vpc_endpoints(vpc_endpoint_id) }
 
-    it { is_expected.to exist }
+    it { is_expected.to(exist) }
   end
 end

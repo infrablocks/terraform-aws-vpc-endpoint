@@ -1,17 +1,15 @@
-output "domain_name" {
-  value = var.domain_name
-}
-output "public_zone_id" {
-  value = var.public_zone_id
-}
-output "certificate_arn" {
-  value = module.certificate.certificate_arn
+output "vpc_id" {
+  value = module.base_network.vpc_id
 }
 
-output "api_gateway_rest_api_id" {
-  value = aws_api_gateway_rest_api.api.id
+output "vpc_cidr" {
+  value = module.base_network.vpc_cidr
 }
 
-output "api_gateway_rest_api_root_resource_id" {
-  value = aws_api_gateway_rest_api.api.root_resource_id
+output "public_subnet_ids" {
+  value = module.base_network.public_subnet_ids
+}
+
+output "private_subnet_ids" {
+  value = module.base_network.private_subnet_ids
 }

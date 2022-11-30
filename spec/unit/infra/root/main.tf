@@ -14,9 +14,5 @@ module "api_gateway" {
   component = var.component
   deployment_identifier = var.deployment_identifier
 
-  api_gateway_rest_api_endpoint_type = var.api_gateway_rest_api_endpoint_type
-
-  api_gateway_rest_api_source_policy_document = var.api_gateway_rest_api_source_policy_document
-
-  include_api_gateway_rest_api_policy = var.include_api_gateway_rest_api_policy
+  vpc_id = data.terraform_remote_state.prerequisites.outputs.vpc_id
 }

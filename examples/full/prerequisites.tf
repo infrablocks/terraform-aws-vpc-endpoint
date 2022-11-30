@@ -1,16 +1,14 @@
-module "certificate" {
-  source  = "infrablocks/acm-certificate/aws"
-  version = "1.2.0-rc.1"
+module "base_network" {
+  source  = "infrablocks/base-networking/aws"
+  version = "4.0.0"
 
-  domain_name = var.domain_name
-  domain_zone_id = var.public_zone_id
+  region             = var.region
+  vpc_cidr           = var.vpc_cidr
+  availability_zones = var.availability_zones
 
-  subject_alternative_names = []
-  subject_alternative_name_zone_id = var.public_zone_id
+  component             = var.component
+  deployment_identifier = var.deployment_identifier
 
-  providers = {
-    aws.certificate = aws.us_east_1
-    aws.domain_validation = aws.us_east_1
-    aws.san_validation = aws.us_east_1
-  }
+  include_route53_zone_association = "no"
+  include_nat_gateways = "no"
 }

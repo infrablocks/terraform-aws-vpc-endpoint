@@ -7,5 +7,5 @@ vars:
   component: "%{hiera('component')}"
   deployment_identifier: "%{hiera('deployment_identifier')}"
 
-  domain_name: "%{hiera('domain_name')}"
-  public_zone_id: "%{hiera('public_zone_id')}"
+  vpc_cidr: "%{hiera('vpc_cidr')}"
+  availability_zones: "%{hiera('availability_zones')}"
