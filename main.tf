@@ -3,6 +3,8 @@ resource "aws_vpc_endpoint" "vpc_endpoint" {
   service_name = "com.amazonaws.${var.region}.s3"
 
   subnet_ids = []
+
+  tags = local.tags
 }
 
 #resource "aws_vpc_endpoint_subnet_association" "" {

@@ -25,5 +25,46 @@ describe 'VPC endpoint' do
         .to(include_output_creation(name: 'module_outputs')
               .with_value(including(:vpc_endpoint_id)))
     end
+
+    it 'includes component by default' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_vpc_endpoint')
+              .with_attribute_value(
+                :tags,
+                a_hash_including(
+                  Component: component
+                )
+              ))
+    end
+
+    it 'includes deployment identifier by default' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_vpc_endpoint')
+              .with_attribute_value(
+                :tags,
+                a_hash_including(
+                  DeploymentIdentifier: deployment_identifier
+                )
+              ))
+    end
   end
+
+  # context 'when providing custom tags' do
+  #   before(:context) do
+  #     @plan = plan(role: :root) do |vars|
+  #       vars.tags = { SomeTag: 'some-value' }
+  #     end
+  #   end
+  #
+  #   it 'includes custom tag' do
+  #     expect(@plan)
+  #       .to(include_resource_creation(type: 'aws_vpc_endpoint')
+  #             .with_attribute_value(
+  #               :tags,
+  #               a_hash_including(
+  #                 SomeTag: 'some-value'
+  #               )
+  #             ))
+  #   end
+  # end
 end
