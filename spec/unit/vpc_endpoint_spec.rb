@@ -58,6 +58,18 @@ describe 'VPC endpoint' do
               ))
     end
 
+    it 'includes a name tag including component and deployment identifier' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_vpc_endpoint')
+              .with_attribute_value(
+                :tags,
+                a_hash_including(
+                  Name: including(component)
+                          .and(including(deployment_identifier))
+                )
+              ))
+    end
+
     it 'outputs the VPC endpoint ID' do
       expect(@plan)
         .to(include_output_creation(name: 'module_outputs')
@@ -67,9 +79,11 @@ describe 'VPC endpoint' do
 
   describe 'when vpc_endpoint_service_name provided' do
     before(:context) do
-      @region = var(role: :root, name: 'region')
+      region = var(role: :root, name: 'region')
+      @service_name = "vpce-svc-071afff70666e61e0.#{region}.vpce.amazonaws.com"
       @plan = plan(role: :root) do |vars|
-        vars.vpc_endpoint_service_name = "com.amazonaws.#{@region}.s3"
+        vars.vpc_endpoint_service_name = @service_name
+        vars.vpc_endpoint_service_common_name = nil
       end
     end
 
@@ -77,26 +91,7 @@ describe 'VPC endpoint' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_vpc_endpoint')
               .with_attribute_value(
-                :service_name, "com.amazonaws.#{@region}.s3"
-              ))
-    end
-  end
-
-  describe 'when both vpc_endpoint_service_name and ' \
-           'vpc_endpoint_common_service_name provided' do
-    before(:context) do
-      @region = var(role: :root, name: 'region')
-      @plan = plan(role: :root) do |vars|
-        vars.vpc_endpoint_service_name = "com.amazonaws.#{@region}.s3"
-        vars.vpc_endpoint_service_common_name = 's3'
-      end
-    end
-
-    it 'uses the provided service name' do
-      expect(@plan)
-        .to(include_resource_creation(type: 'aws_vpc_endpoint')
-              .with_attribute_value(
-                :service_name, "com.amazonaws.#{@region}.s3"
+                :service_name, @service_name
               ))
     end
   end
@@ -119,7 +114,7 @@ describe 'VPC endpoint' do
   context 'when custom tags provided' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
-        vars.vpc_endpoint_service_common_name = 's3'
+        apply_defaults(vars)
         vars.tags = { SomeTag: 'some-value' }
       end
     end
@@ -146,6 +141,18 @@ describe 'VPC endpoint' do
               ))
     end
 
+    it 'includes a name tag including component and deployment identifier' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_vpc_endpoint')
+              .with_attribute_value(
+                :tags,
+                a_hash_including(
+                  Name: including(component)
+                          .and(including(deployment_identifier))
+                )
+              ))
+    end
+
     it 'includes the custom tag' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_vpc_endpoint')
@@ -156,5 +163,9 @@ describe 'VPC endpoint' do
                 )
               ))
     end
+  end
+
+  def apply_defaults(vars)
+    vars.vpc_endpoint_service_common_name = 's3'
   end
 end

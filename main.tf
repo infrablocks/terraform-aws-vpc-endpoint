@@ -14,7 +14,9 @@ resource "aws_vpc_endpoint" "vpc_endpoint" {
   service_name = var.vpc_endpoint_service_name == null ? data.aws_vpc_endpoint_service.vpc_endpoint_service[0].service_name : var.vpc_endpoint_service_name
   vpc_endpoint_type = var.vpc_endpoint_type
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    Name: "vpce-${var.component}-${var.deployment_identifier}"
+  })
 }
 
 resource "aws_vpc_endpoint_subnet_association" "vpc_endpoint_subnet_association" {

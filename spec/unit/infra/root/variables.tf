@@ -22,3 +22,4 @@ variable "vpc_endpoint_service_name" {
 variable "vpc_endpoint_type" {
   default = null
 }
+
