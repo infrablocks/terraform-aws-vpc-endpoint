@@ -33,6 +33,13 @@ variable "vpc_endpoint_service_name" {
   default = null
 }
 
+variable "enable_private_dns" {
+  description = "Whether or not to associate a private hosted zone with the specified VPC. Applicable for endpoints of type \"Interface\". Defaults to `false`."
+  type = bool
+  default = false
+  nullable = false
+}
+
 variable "tags" {
   description = "Map of tags to be applied to VPC endpoint"
   type        = map(string)

@@ -6,7 +6,7 @@ data "terraform_remote_state" "prerequisites" {
   }
 }
 
-module "api_gateway" {
+module "vpc_endpoint" {
   source = "../../../.."
 
   region = var.region
@@ -20,6 +20,8 @@ module "api_gateway" {
   vpc_endpoint_subnet_ids = var.vpc_endpoint_subnet_ids
   vpc_endpoint_service_common_name = var.vpc_endpoint_service_common_name
   vpc_endpoint_service_name = var.vpc_endpoint_service_name
+
+  enable_private_dns = var.enable_private_dns
 
   tags = var.tags
 }

@@ -23,3 +23,7 @@ variable "vpc_endpoint_type" {
   default = null
 }
 
+variable "enable_private_dns" {
+  type = bool
+  default = null
+}

@@ -70,6 +70,14 @@ describe 'VPC endpoint' do
               ))
     end
 
+    it 'does not enable private DNS' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_vpc_endpoint')
+              .with_attribute_value(
+                :private_dns_enabled, false
+              ))
+    end
+
     it 'outputs the VPC endpoint ID' do
       expect(@plan)
         .to(include_output_creation(name: 'module_outputs')
@@ -108,6 +116,40 @@ describe 'VPC endpoint' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_vpc_endpoint')
               .with_attribute_value(:vpc_endpoint_type, 'Interface'))
+    end
+  end
+
+  describe 'when enable_private_dns is true' do
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        apply_defaults(vars)
+        vars.enable_private_dns = true
+      end
+    end
+
+    it 'enables private DNS' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_vpc_endpoint')
+              .with_attribute_value(
+                :private_dns_enabled, true
+              ))
+    end
+  end
+
+  describe 'when enable_private_dns is false' do
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        apply_defaults(vars)
+        vars.enable_private_dns = false
+      end
+    end
+
+    it 'does not enable private DNS' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_vpc_endpoint')
+              .with_attribute_value(
+                :private_dns_enabled, false
+              ))
     end
   end
 
