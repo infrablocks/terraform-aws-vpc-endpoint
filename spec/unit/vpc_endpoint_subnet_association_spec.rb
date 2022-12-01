@@ -41,7 +41,7 @@ describe 'VPC endpoint subnet association' do
         expect(@plan)
           .to(include_resource_creation(
             type: 'aws_vpc_endpoint_subnet_association'
-              )
+          )
                 .with_attribute_value(:subnet_id, subnet_id))
       end
     end
