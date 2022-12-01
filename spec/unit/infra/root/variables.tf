@@ -8,14 +8,17 @@ variable "tags" {
   default = null
 }
 
-variable "subnet_ids" {
+variable "vpc_endpoint_subnet_ids" {
   type = list(string)
   default = null
 }
 
-variable "service" {
-  default = "s3"
+variable "vpc_endpoint_service_common_name" {
+  default = null
 }
-variable "service_type" {
-  default = "Gateway"
+variable "vpc_endpoint_service_name" {
+  default = null
+}
+variable "vpc_endpoint_type" {
+  default = null
 }

@@ -14,12 +14,12 @@ module "api_gateway" {
   component = var.component
   deployment_identifier = var.deployment_identifier
 
-  service = var.service
-  service_type = var.service_type
+  vpc_id = data.terraform_remote_state.prerequisites.outputs.vpc_id
+
+  vpc_endpoint_type = var.vpc_endpoint_type
+  vpc_endpoint_subnet_ids = var.vpc_endpoint_subnet_ids
+  vpc_endpoint_service_common_name = var.vpc_endpoint_service_common_name
+  vpc_endpoint_service_name = var.vpc_endpoint_service_name
 
   tags = var.tags
-
-  subnet_ids = var.subnet_ids
-
-  vpc_id = data.terraform_remote_state.prerequisites.outputs.vpc_id
 }
