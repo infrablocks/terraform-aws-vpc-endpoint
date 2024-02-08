@@ -14,6 +14,10 @@ resource "aws_vpc_endpoint" "vpc_endpoint" {
 
   private_dns_enabled = var.enable_private_dns
 
+  security_group_ids = [
+    aws_security_group.vpc_endpoint.id
+  ]
+
   tags = merge(local.tags, {
     Name: "vpce-${var.component}-${var.deployment_identifier}"
   })
