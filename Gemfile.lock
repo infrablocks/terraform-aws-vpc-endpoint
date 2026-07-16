@@ -1679,7 +1679,7 @@ GEM
       net-http (~> 0.5)
     ffi (1.17.4-arm64-darwin)
     ffi (1.17.4-x86_64-darwin)
-    ffi (1.17.4-x86_64-linux-gnu)
+    ffi (1.17.4-x86_64-linux)
     getsource (0.2.2)
     git (1.19.1)
       addressable (~> 2.8)
