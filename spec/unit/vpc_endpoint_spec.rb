@@ -65,7 +65,7 @@ describe 'VPC endpoint' do
                 :tags,
                 a_hash_including(
                   Name: including(component)
-                          .and(including(deployment_identifier))
+                        .and(including(deployment_identifier))
                 )
               ))
     end
@@ -190,7 +190,7 @@ describe 'VPC endpoint' do
                 :tags,
                 a_hash_including(
                   Name: including(component)
-                          .and(including(deployment_identifier))
+                        .and(including(deployment_identifier))
                 )
               ))
     end
