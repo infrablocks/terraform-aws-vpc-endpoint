@@ -119,6 +119,46 @@ describe 'VPC endpoint' do
     end
   end
 
+  context 'when subnet IDs provided' do
+    before(:context) do
+      @subnet_ids = %w[subnet-12345678 subnet-23456789]
+      @plan = plan(role: :root) do |vars|
+        vars.vpc_endpoint_service_common_name = 'execute-api'
+        vars.vpc_endpoint_type = 'Interface'
+        vars.vpc_endpoint_subnet_ids = @subnet_ids
+      end
+    end
+
+    it 'associates the VPC endpoint with each subnet id' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_vpc_endpoint')
+              .with_attribute_value(:subnet_ids, @subnet_ids))
+    end
+
+    it 'does not create a separate subnet association resource' do
+      expect(@plan)
+        .not_to(include_resource_creation(
+                  type: 'aws_vpc_endpoint_subnet_association'
+                ))
+    end
+  end
+
+  context 'when subnet IDs is an empty list' do
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        vars.vpc_endpoint_service_common_name = 'execute-api'
+        vars.vpc_endpoint_type = 'Interface'
+        vars.vpc_endpoint_subnet_ids = []
+      end
+    end
+
+    it 'associates the VPC endpoint with no subnets' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_vpc_endpoint')
+              .with_attribute_value(:subnet_ids, []))
+    end
+  end
+
   describe 'when enable_private_dns is true' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
