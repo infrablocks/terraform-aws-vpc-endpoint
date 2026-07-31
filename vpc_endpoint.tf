@@ -14,8 +14,6 @@ resource "aws_vpc_endpoint" "vpc_endpoint" {
 
   private_dns_enabled = var.enable_private_dns
 
-  subnet_ids = var.vpc_endpoint_subnet_ids
-
   security_group_ids = [
     aws_security_group.vpc_endpoint.id
   ]
