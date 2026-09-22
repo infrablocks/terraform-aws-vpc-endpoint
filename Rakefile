@@ -288,7 +288,7 @@ namespace :version do
   task :bump, [:type] do |_, args|
     next_tag = latest_tag.send("#{args.type}!")
     repo.add_tag(next_tag.to_s)
-    repo.push('origin', 'main', tags: true)
+    repo.push('origin', "refs/tags/#{next_tag}")
     puts "Bumped version to #{next_tag}."
   end
 
@@ -296,7 +296,7 @@ namespace :version do
   task :release do
     next_tag = latest_tag.release!
     repo.add_tag(next_tag.to_s)
-    repo.push('origin', 'main', tags: true)
+    repo.push('origin', "refs/tags/#{next_tag}")
     puts "Released version #{next_tag}."
   end
 end
