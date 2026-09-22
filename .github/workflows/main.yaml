@@ -7,10 +7,6 @@ on:
 permissions:
   contents: read
 
-# Job-level, not workflow-level: a run awaiting release approval holds the group
-# slot, and a workflow-level group would freeze all main CI for the approval window.
-# queue: max keeps every queued run; the default cancels all but the newest
-
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -31,7 +27,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    # Shared with pr.yaml's test job — one repo-wide apply at a time
+    # Shared with pr.yaml's test job — one repo-wide AWS apply at a time
     concurrency:
       group: aws-integration
       cancel-in-progress: false
@@ -63,7 +59,8 @@ jobs:
     needs: [check, test]
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    # Serialise tag computation between close-together merges
+    # Serialise tag computation between close-together merges. Job-level and
+    # queue: max: every queued run is kept, none is cancelled
     concurrency:
       group: main
       cancel-in-progress: false
@@ -98,8 +95,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     environment: release
+    # Own group: a run waiting for approval holds this slot for the whole
+    # wait, so it must not share prerelease's group or later merges queue
+    # behind it
     concurrency:
-      group: main
+      group: release
       cancel-in-progress: false
       queue: max
     permissions:
@@ -107,7 +107,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
+          # Release the commit this run tested and the approver saw, not
+          # whatever main is by approval time
+          ref: ${{ github.sha }}
           fetch-depth: 0
       - name: Install tools
         uses: infrablocks/github-actions/asdf_install@v1
